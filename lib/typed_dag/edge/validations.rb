@@ -3,11 +3,12 @@ module TypedDag::Edge
     extend ActiveSupport::Concern
 
     included do
-      validates_uniqueness_of :from,
-                              scope: [:to],
-                              conditions: -> {
-                                where.not("#{_dag_options.type_columns.join(' + ')} > 1")
-                              }
+      validates_uniqueness_of :from, {
+        scope: [:to],
+        conditions: -> {
+          where.not("#{_dag_options.type_columns.join(' + ')} > 1")
+        }
+      }
 
       validate :no_circular_dependency
 
